@@ -296,7 +296,7 @@ $(call inherit-product-if-exists, vendor/sony/pepper/pepper-vendor.mk)
 
 PRODUCT_PROPERTY_OVERRIDES += \
     sys.mem.max_hidden_apps=10 \
-    persist.sys.usb.config=mtp \
+    persist.sys.usb.config=mtp,adb \
     wifi.interface=wlan0 \
     ro.sf.lcd_density=240
 
