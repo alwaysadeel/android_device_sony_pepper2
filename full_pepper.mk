@@ -30,7 +30,7 @@ PRODUCT_PACKAGES := \
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
 #charging animation
-$(call inherit-product, device/sony/pepper/prebuilt/resources-480x854.mk)
+$(call inherit-product, device/sony/pepper/prebuilt/resources-320x480.mk)
 
 # Inherit from pepper device
 $(call inherit-product, device/sony/pepper/pepper.mk)
@@ -38,6 +38,7 @@ $(call inherit-product, device/sony/pepper/pepper.mk)
 # Set those variables here to overwrite the inherited values.
 PRODUCT_NAME := full_pepper
 PRODUCT_DEVICE := pepper
-PRODUCT_BRAND := Sony
-PRODUCT_MANUFACTURER := Sony
+PRODUCT_BRAND := Android
 PRODUCT_MODEL := Xperia Sola
+PRODUCT_MANUFACTURER := Sony
+#PRODUCT_RESTRICT_VENDOR_FILES := owner path

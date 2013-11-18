@@ -3,10 +3,8 @@ USE_CAMERA_STUB := true
 # inherit from the proprietary version
 -include vendor/sony/pepper/BoardConfigVendor.mk
 
-TARGET_SPECIFIC_HEADER_PATH := device/sony/pepper/include
-TARGET_SPECIFIC_HEADER_PATH += device/sony/pepper/hardware
-TARGET_SPECIFIC_HEADER_PATH += hardware/semc/bluetooth/glib
-TARGET_SPECIFIC_HEADER_PATH += hardware/semc/bluetooth/bluez/lib
+TARGET_SPECIFIC_HEADER_PATH := \
+    device/sony/pepper/include
 
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
@@ -46,18 +44,21 @@ COMMON_GLOBAL_CFLAGS += -DMR0_AUDIO_BLOB
 BOARD_USES_LIBMEDIA_WITH_AUDIOPARAMETER := true
 
 # WIFI
+BOARD_WLAN_DEVICE := cw1200
 WPA_SUPPLICANT_VERSION := VER_0_8_X
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB := private_lib_nl80211_cmd
 BOARD_HOSTAPD_DRIVER := NL80211
-BOARD_TI_SOFTAP := true
-BOARD_WLAN_DEVICE := wl12xx_mac80211
-BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_wl12xx
-BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_wl12xx
+BOARD_HOSTAPD_PRIVATE_LIB := private_lib_nl80211_cmd
+BOARD_SOFTAP_DEVICE_TI := NL80211
 
 # Graphics
 USE_OPENGL_RENDERER := true
-BOARD_EGL_CFG := device/sony/pepper/config/egl.cfg
+BOARD_EGL_CFG := device/sony/pepper/prebuilt/system/lib/egl/egl.cfg
 COMMON_GLOBAL_CFLAGS += -DSTE_HARDWARE
+
+# libutils backward compatibility for hals
+COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
 
 # jb camera
 COMMON_GLOBAL_CFLAGS += -DICS_CAMERA_BLOB
@@ -88,10 +89,16 @@ BOARD_USES_MMCUTILS := true
 BOARD_HAS_NO_MISC_PARTITION := true
 
 # cwm specific
+RECOVERY_NAME := CWM-Pepper
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/sony/pepper/recovery/recovery-keys.c
 BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_10x18.h\"
-TARGET_RECOVERY_FSTAB = device/sony/pepper/config/root/fstab.st-ericsson
+TARGET_RECOVERY_FSTAB = device/sony/pepper/prebuilt/root/fstab.st-ericsson
 RECOVERY_FSTAB_VERSION := 2
+
+# uncoment to enable back button in cwm (only if you commented XPERIA_CWM_TOUCH)
+#BOARD_HAS_NO_SELECT_BUTTON := true
+# coment this if you no want xperia touch enabled cwm
+COMMON_GLOBAL_CFLAGS += -DXPERIA_CWM_TOUCH
 
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/musb-ux500.0/musb-hdrc/gadget/lun%d/file"
 
@@ -106,11 +113,11 @@ BOARD_KERNEL_CMDLINE := cachepolicy=writealloc noinitrd init=init board_id=1 log
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000
 
 # Partition information
-BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 BOARD_VOLD_MAX_PARTITIONS := 16
 
-BOARD_BOOTIMAGE_PARTITION_SIZE := 0x01400000
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 0x01400000
+# partition size is dec=16777216 hex=01000000 so 0x01000000 is correct one!
+BOARD_BOOTIMAGE_PARTITION_SIZE := 0x01000000
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 0x01000000
 
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 1056964608
 BOARD_USERDATA_PARTITION_SIZE := 2147483648
@@ -118,7 +125,6 @@ BOARD_FLASH_BLOCK_SIZE := 131072
 
 COMMON_GLOBAL_CFLAGS += -DNEW_NOTIFICATION
 
-BOARD_HAS_NO_SELECT_BUTTON := true
 TARGET_USERIMAGES_USE_EXT4 := true
 
 BOARD_SDCARD_INTERNAL_DEVICE := /dev/block/mmcblk0p14
