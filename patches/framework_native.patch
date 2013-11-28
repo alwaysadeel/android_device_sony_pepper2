@@ -7,6 +7,7 @@
 #       modified:   libs/binder/MemoryBase.cpp
 #       modified:   libs/gui/Android.mk
 #       modified:   libs/gui/GLConsumer.cpp
+#       modified:   libs/ui/PixelFormat.cpp
 #       modified:   opengl/include/EGL/eglext.h
 #       modified:   opengl/libs/EGL/eglApi.cpp
 #       modified:   opengl/libs/EGL/egl_entries.in
@@ -229,7 +230,7 @@ index 5c82330..105c5df 100644
  }; // namespace android
  
 diff --git a/frameworks/native/libs/gui/Android.mk b/frameworks/native/libs/gui/Android.mk
-index d931bc0..970179d 100644
+index b42fa63..7f9ede5 100644
 --- a/frameworks/native/libs/gui/Android.mk
 +++ b/frameworks/native/libs/gui/Android.mk
 @@ -39,6 +39,12 @@ LOCAL_SHARED_LIBRARIES := \
@@ -244,7 +245,7 @@ index d931bc0..970179d 100644
 +
  # Executed only on QCOM BSPs
  ifeq ($(TARGET_USES_QCOM_BSP),true)
-     LOCAL_C_INCLUDES += hardware/qcom/display/libgralloc
+ ifneq ($(TARGET_QCOM_DISPLAY_VARIANT),)
 diff --git a/frameworks/native/libs/gui/GLConsumer.cpp b/frameworks/native/libs/gui/GLConsumer.cpp
 index 7ee3081..a122283 100644
 --- a/frameworks/native/libs/gui/GLConsumer.cpp
@@ -442,6 +443,37 @@ index 7ee3081..a122283 100644
  
  }; // namespace android
 +
+diff --git a/frameworks/native/libs/ui/PixelFormat.cpp b/frameworks/native/libs/ui/PixelFormat.cpp
+index 0595315..5e5951e 100644
+--- a/frameworks/native/libs/ui/PixelFormat.cpp
++++ b/frameworks/native/libs/ui/PixelFormat.cpp
+@@ -88,10 +88,26 @@ status_t getPixelFormatInfo(PixelFormat format, PixelFormatInfo* info)
+     switch (format) {
+     case HAL_PIXEL_FORMAT_YCbCr_422_SP:
+     case HAL_PIXEL_FORMAT_YCbCr_422_I:
++#ifdef STE_HARDWARE
++    case HAL_PIXEL_FORMAT_YCrCb_422_SP:
++    case HAL_PIXEL_FORMAT_YCbCr_422_P:
++    case HAL_PIXEL_FORMAT_YCrCb_422_P:
++    case HAL_PIXEL_FORMAT_CbYCrY_422_I:
++#endif
+         info->bitsPerPixel = 16;
+         goto done;
+     case HAL_PIXEL_FORMAT_YCrCb_420_SP:
+     case HAL_PIXEL_FORMAT_YV12:
++#ifdef STE_HARDWARE
++    case HAL_PIXEL_FORMAT_YCbCr_420_SP:
++    case HAL_PIXEL_FORMAT_YCbCr_420_SP_TILED:
++    case HAL_PIXEL_FORMAT_YCrCb_420_SP_TILED:
++    case HAL_PIXEL_FORMAT_YCbCr_420_P:
++    case HAL_PIXEL_FORMAT_YCrCb_420_P:
++    case HAL_PIXEL_FORMAT_YCbCr_420_I:
++    case HAL_PIXEL_FORMAT_CbYCrY_420_I:
++    case HAL_PIXEL_FORMAT_YCBCR42XMBN:
++#endif
+         info->bitsPerPixel = 12;
+      done:
+         info->format = format;
 diff --git a/frameworks/native/opengl/include/EGL/eglext.h b/frameworks/native/opengl/include/EGL/eglext.h
 index 3b2984a..9736c5a 100644
 --- a/frameworks/native/opengl/include/EGL/eglext.h
@@ -513,7 +545,7 @@ index 70d0e52..138f41e 100644
  
  EGL_ENTRY(EGLBoolean, eglHibernateProcessIMG, void)
 diff --git a/frameworks/native/services/surfaceflinger/Android.mk b/frameworks/native/services/surfaceflinger/Android.mk
-index ee24d27..4a131bd 100644
+index 7b7a49b..51c2700 100644
 --- a/frameworks/native/services/surfaceflinger/Android.mk
 +++ b/frameworks/native/services/surfaceflinger/Android.mk
 @@ -48,6 +48,10 @@ ifeq ($(TARGET_DISABLE_TRIPLE_BUFFERING),true)
