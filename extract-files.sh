@@ -27,8 +27,8 @@ for FILE in `cat proprietary-files.txt | grep -v ^# | grep -v ^$`; do
     if [ ! -d $BASE/$DIR ]; then
         mkdir -p $BASE/$DIR
     fi
-    #adb pull /system/$FILE $BASE/$FILE
-    unzip -p /var/www/downloads/cm10.2_pepper-ota-eng.root_Build.1 system/$FILE > $BASE/$FILE
+    adb pull /system/$FILE $BASE/$FILE
+    #unzip -p /var/www/downloads/cm11.0_pepper-ota-eng.root_Build.1.zip system/$FILE > $BASE/$FILE
 done
 
 ./setup-makefiles.sh
