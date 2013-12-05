@@ -8,8 +8,6 @@ MOD_CORE="cw1200_core.ko"
 MOD_WLAN="cw1200_wlan.ko"
 ARG="macaddr="
 
-IP_FILE="/data/misc/wifi/ipconfig.txt"
-
 if ( /system/bin/ls $MAC_FILE > /dev/null ); then
      ADDR=`/system/bin/cat $MAC_FILE`
      echo $COMMAND1 $MOD_PATH/$MOD_CORE $ARG$ADDR
@@ -22,8 +20,3 @@ fi
 
 echo $COMMAND1 $MOD_PATH/$MOD_WLAN
 $COMMAND1 $MOD_PATH/$MOD_WLAN
-
-# needed for WifiConfigStore
-if [ ! -e $IP_FILE ]; then
-     touch /data/misc/wifi/ipconfig.txt
-fi

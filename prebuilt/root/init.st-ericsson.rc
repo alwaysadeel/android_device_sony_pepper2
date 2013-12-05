@@ -567,12 +567,6 @@ service cn_server /system/bin/cn_server
     user root
     group radio misc
 
-# STE, C&N service daemon
-service cn_server /system/bin/cn_server
-    class modem-core
-    user root
-    group radio misc
-
 # STE, PS connection control
 service init_stepscc /system/bin/sh /data/misc/psdata/stepscc_init.sh
     class main
