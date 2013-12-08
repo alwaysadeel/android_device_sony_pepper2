@@ -47,10 +47,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libglib
 
-# Hcidump
-PRODUCT_PACKAGES += \
-    hcidump
-
 # Libasound
 PRODUCT_PACKAGES += \
     libasound
@@ -67,10 +63,22 @@ PRODUCT_PACKAGES += \
     haltest
 
 # Bluez 5.11 btmon
-    avinfo \
-    sdptool \
+PRODUCT_PACKAGES += \
+    btmon
+
+# Bluez 5.11 tools
+PRODUCT_PACKAGES += \
+    hciattach \
     hciconfig \
-    l2ping
+    hcitool \
+    hcidump \
+    rfcomm \
+    rctest \
+    l2test \
+    l2ping \
+    sdptool \
+    ciptool \
+    bccmd
 
 # BT A2DP
 PRODUCT_PACKAGES += \
