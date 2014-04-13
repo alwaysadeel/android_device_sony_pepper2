@@ -91,7 +91,7 @@ BOARD_RIL_CLASS := ../../../device/sony/pepper/telephony-common/
 
 # Custom boot
 TARGET_PROVIDES_INIT_RC := true
-TARGET_RECOVERY_PRE_COMMAND := "touch /cache/recovery/boot;sync;"
+TARGET_RECOVERY_PRE_COMMAND := "/system/bin/touch /cache/recovery/boot; /system/bin/sync;"
 BOARD_CUSTOM_BOOTIMG_MK := device/sony/pepper/custombootimg.mk
 TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/sony/pepper/releasetools/semc_ota_from_target_files
 
@@ -117,7 +117,7 @@ TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/musb-ux500.0/musb-hdrc
 # Kernel information
 TARGET_KERNEL_CONFIG := xperiasola_defconfig
 TARGET_KERNEL_SOURCE := kernel/sony/u8500
-TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-4.4.3
+TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-linaro-4.6.2/bin/arm-eabi-
 BOARD_KERNEL_BASE := 0x0
 BOARD_RECOVERY_BASE := 0x0
 BOARD_KERNEL_PAGESIZE := 2048
